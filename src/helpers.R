@@ -125,7 +125,7 @@ plotbands<-function(tab, epsilon,nametab){
     scale_fill_manual(values=fill)+
     theme(legend.title=element_blank(), axis.text=element_text(size=14),axis.title=element_text(size=12))+
     geom_text(data=bandsTab, aes(x = Quartile,fill=variable ,y = value+0.2,label = paste(signif(value,2),'%')),
-              color='black', size=4,
+              color='white', size=5,
               position = position_stack(0.5), size=5)+
               
     NULL
