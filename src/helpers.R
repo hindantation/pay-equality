@@ -40,6 +40,19 @@ unadjustedTab<-function(df,namedf){
   return(res)
 }}
 
+
+
+# linear regression to estimate adjusted pay gap
+reg_pop<-function(tab,pop='mgr')
+{
+  f <- as.formula(paste('wage','.',sep = " ~ "))
+  # adjusted paygap 
+  lm0<-lm(formula = f, data=tab)
+  res<-cbind.data.frame(c('Unadjusted'=gapEstimator(tab)$mean,adjusted(lm0)))
+  return(res)
+  
+}
+
 # formatting of linear regression objects for reporting 
 adjusted<-function(lmobject){
   B0<-lmobject$coefficients['(Intercept)']
@@ -80,7 +93,7 @@ plotbands<-function(tab, epsilon,nametab){
     ------
     plot of the pay-bands
     "
-  # require reshape and ggplot2 if not insattked print, you need to insatll ggplot2 and reshape to use this function 
+  # required packages
   if(!require(ggplot2)) print('install ggplot2 package')
   if(!require(reshape)) print('install reshape package')
   #pay bands
@@ -123,10 +136,10 @@ plotbands<-function(tab, epsilon,nametab){
     theme(axis.text.x = element_text(angle = 0, hjust = 1), plot.margin = margin(0.5,0.5,0,0.5, "cm"))+
     ggtitle(paste('Pay quartiles per gender for group', nametab,sep=' '))+
     scale_fill_manual(values=fill)+
-    theme(legend.title=element_blank(), axis.text=element_text(size=14),axis.title=element_text(size=12))+
-    geom_text(data=bandsTab, aes(x = Quartile,fill=variable ,y = value+0.2,label = paste(signif(value,2),'%')),
+    theme(legend.title=element_blank(), axis.text=element_text(size=14),axis.title=element_text(size=14))+
+    geom_text(data=bandsTab, aes(x = Quartile,fill=variable ,y = value-0.2,label = paste(signif(value,2),'%')),
               color='white', size=5,
-              position = position_stack(0.5), size=5)+
+              position = position_stack(0.7), size=6)+
               
     NULL
   # dev.off()
